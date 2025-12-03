@@ -4,6 +4,48 @@ import sys
 import re
 from datetime import datetime
 
+"""
+count3D.py — RELION 3D Classification Analysis & Timing Summary
+--------------------------------------------------------------
+
+This script analyzes a RELION 3D classification job directory
+(Class3D/jobXXX/) and extracts:
+
+  • Number of classes
+  • Per-iteration class statistics from run_itXXX_model.star
+  • Actual particle assignments from run_itXXX_optimiser.star
+  • Per-iteration particle counts and class distributions
+  • Total particle count (from *_data.star or fallback to optimiser)
+  • Optics group composition
+  • Iteration runtime durations based on file modification timestamps
+  • Total job runtime and average iteration time
+
+Outputs:
+  • Full analysis printed to the terminal
+  • A summary file "analysis.txt" written to Class3D/jobXXX/
+
+Usage:
+    python count3D.py <jobnumber>
+
+Example:
+    python count3D.py 035
+
+This will analyze:
+    Class3D/job035/run_it000_model.star
+    Class3D/job035/run_it000_optimiser.star
+    … up to final iteration
+
+Notes:
+  • Works with long-running classification jobs (hours to days).
+  • Supports any number of iterations.
+  • Handles missing _rlnTotalParticles by falling back to counting
+    particle assignments in run_itXXX_optimiser.star.
+  • Compatible with RELION 3.x–5.x STAR file formats.
+
+Author: ChatGPT5 (for Eoin Leen)
+Last updated: 2025-02-14
+"""
+
 # -----------------------------------------------
 # Utility functions
 # -----------------------------------------------
